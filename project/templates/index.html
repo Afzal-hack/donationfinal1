@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>mrAvzal — Support</title>
+
+  <!-- CSS — static/css/ papkasidan -->
+  <link rel="stylesheet" href="/static/css/style.css">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+<div class="glow"></div>
+
+<!-- LANG -->
+<div class="lang-bar">
+  <button class="lang-btn active" data-lang="uz" onclick="setLang('uz')">UZ</button>
+  <button class="lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
+</div>
+
+<!-- ADMIN (yashirin tugma) -->
+<button class="admin-link" onclick="openAdmin()">⚙</button>
+
+<!-- ════════════════════════════════
+     ASOSIY FORMA
+════════════════════════════════ -->
+<div class="wrap" id="main-wrap">
+
+  <div class="avatar-ring">
+    <div class="avatar-inner">mA</div>
+  </div>
+
+  <h1 class="name">mr<span>Avzal</span></h1>
+
+  <p class="tagline"
+     data-uz="YouTube kanalimni qo'llab-quvvatlang — har bir xayr-ehson yangi kontentga ilhom beradi 🎬"
+     data-en="Support my YouTube channel — every donation fuels new content 🎬">
+    YouTube kanalimni qo'llab-quvvatlang — har bir xayr-ehson yangi kontentga ilhom beradi 🎬
+  </p>
+
+  <div class="card">
+    <div class="card-label" data-uz="VALYUTA" data-en="CURRENCY">VALYUTA</div>
+    <div class="currency-toggle">
+      <button class="cur-btn active" id="cur-uzs" onclick="setCurrency('UZS')">🇺🇿 UZS</button>
+      <button class="cur-btn"        id="cur-usd" onclick="setCurrency('USD')">🇺🇸 USD</button>
+    </div>
+
+    <div class="card-label" data-uz="MIQDOR" data-en="AMOUNT">MIQDOR</div>
+    <div class="amount-wrap">
+      <span class="cur-symbol" id="cur-symbol">UZS</span>
+      <input class="amount-input" type="number" id="amount" placeholder="0" min="1" inputmode="decimal">
+    </div>
+
+    <div class="card-label" data-uz="ISMINGIZ (ixtiyoriy)" data-en="YOUR NAME (optional)">ISMINGIZ (ixtiyoriy)</div>
+    <input class="name-input" type="text" id="donor-name" placeholder="Anonymous" maxlength="40">
+  </div>
+
+  <div class="card" style="padding:20px 22px">
+    <button class="donate-btn" id="donate-btn" onclick="openPayment()" disabled>
+      <span id="btn-text">Summa kiriting</span>
+    </button>
+    <div class="secure">
+      🔒
+      <span data-uz="Xavfsiz — ma'lumotlar saqlanmaydi"
+            data-en="Secure — no data stored">Xavfsiz — ma'lumotlar saqlanmaydi</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════
+     SUCCESS EKRANI
+════════════════════════════════ -->
+<div class="wrap-success" id="success-wrap">
+  <div class="success-icon">✓</div>
+  <h2 class="success-title" data-uz="Rahmat!" data-en="Thank you!">Rahmat!</h2>
+  <p class="success-msg" id="success-msg"></p>
+  <button class="back-btn" onclick="goBack()"
+          data-uz="← Qaytish" data-en="← Go back">← Qaytish</button>
+</div>
+
+<!-- ════════════════════════════════
+     TO'LOV MODALI
+════════════════════════════════ -->
+<div class="modal-bg" id="modal-bg" onclick="closeModalBg(event)">
+  <div class="modal">
+
+    <div class="step-indicator">
+      <div class="step active" id="si-1">
+        <div class="step-num" id="sn-1">1</div>
+        <span data-uz="To'lov" data-en="Payment">To'lov</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step" id="si-2">
+        <div class="step-num" id="sn-2">2</div>
+        <span data-uz="Xabar" data-en="Message">Xabar</span>
+      </div>
+    </div>
+
+    <!-- STEP 1: Karta -->
+    <div id="step1-box">
+      <div class="modal-title"
+           data-uz="Karta orqali o'tkazing"
+           data-en="Transfer via card">Karta orqali o'tkazing</div>
+      <p class="modal-sub"
+         data-uz="Quyidagi kartaga pul o'tkazing, keyin davom eting."
+         data-en="Transfer the amount to the card below, then continue.">
+        Quyidagi kartaga pul o'tkazing, keyin davom eting.
+      </p>
+
+      <div class="amount-badge">💸 <span id="modal-amount">0</span></div>
+
+      <div class="card-display">
+        <div class="card-chip"></div>
+        <div class="card-number">
+          <span>4231</span><span>2000</span><span>1561</span><span>9835</span>
+        </div>
+        <div class="card-name-row">
+          <div>
+            <div class="card-label-sm" data-uz="KARTA EGASI" data-en="CARD HOLDER">KARTA EGASI</div>
+            <div class="card-val">AVZAL</div>
+          </div>
+          <div style="text-align:right">
+            <div class="card-label-sm">VISA</div>
+            <div class="card-val" id="card-cur-show">UZS</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="copy-btn" id="copy-btn" onclick="copyCard()">
+        <span id="copy-icon">📋</span>
+        <span id="copy-text"
+              data-uz="Karta raqamini nusxalash"
+              data-en="Copy card number">Karta raqamini nusxalash</span>
+      </button>
+
+      <button class="donate-btn" onclick="goToStep2()">
+        <span data-uz="✓ O'tkazdim — davom etish →"
+              data-en="✓ Transferred — continue →">✓ O'tkazdim — davom etish →</span>
+      </button>
+      <button class="modal-close" onclick="closeModal()"
+              data-uz="Bekor qilish" data-en="Cancel">Bekor qilish</button>
+    </div>
+
+    <!-- STEP 2: Xabar -->
+    <div class="step2-box" id="step2-box">
+      <div class="modal-title"
+           data-uz="Xabar qoldiring"
+           data-en="Leave a message">Xabar qoldiring</div>
+      <p class="modal-sub"
+         data-uz="Ixtiyoriy — menga biror narsa yozishingiz mumkin."
+         data-en="Optional — you can write me something.">
+        Ixtiyoriy — menga biror narsa yozishingiz mumkin.
+      </p>
+      <div class="notice-box">
+        <strong data-uz="🔒 Maxfiy:" data-en="🔒 Private:">🔒 Maxfiy:</strong>
+        <span data-uz=" Bu xabarni faqat men ko'raman."
+              data-en=" Only I can see this message."> Bu xabarni faqat men ko'raman.</span>
+      </div>
+      <textarea class="msg-input" id="donor-msg" maxlength="300" placeholder="..."></textarea>
+      <button class="donate-btn" onclick="submitMessage()">
+        <span data-uz="Yuborish ✓" data-en="Send ✓">Yuborish ✓</span>
+      </button>
+      <button class="modal-close" onclick="skipMessage()"
+              data-uz="Xabarsiz yakunlash"
+              data-en="Finish without message">Xabarsiz yakunlash</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     ADMIN PANEL
+════════════════════════════════ -->
+<div class="admin-overlay" id="admin-overlay">
+  <div class="admin-wrap">
+    <div class="admin-header">
+      <div class="admin-title">⚙ Admin Panel</div>
+      <button class="admin-close-btn" onclick="closeAdmin()">✕ Yopish</button>
+    </div>
+
+    <div id="admin-login-box" class="admin-login-box">
+      <div class="card-label" style="margin-bottom:14px">PAROL</div>
+      <input class="admin-pass-input" type="password" id="admin-pass"
+             placeholder="••••••••"
+             onkeydown="if(event.key==='Enter') checkPass()">
+      <button class="admin-login-btn" onclick="checkPass()">Kirish</button>
+      <div class="login-err" id="login-err">Noto'g'ri parol!</div>
+    </div>
+
+    <div id="admin-messages" style="display:none">
+      <div class="admin-stats">
+        <div class="stat-card">
+          <div class="stat-num" id="stat-count">0</div>
+          <div class="stat-label">Xabarlar</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="stat-total">0</div>
+          <div class="stat-label">Jami UZS</div>
+        </div>
+      </div>
+      <div class="msg-list" id="msg-list"></div>
+      <button class="clear-all-btn" onclick="clearAll()">🗑 Barchasini o'chirish</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- JS — static/js/ papkasidan, eng oxirida yuklanadi -->
+<script src="/static/js/main.js"></script>
+
+</body>
+</html>
