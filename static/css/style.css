@@ -1,0 +1,26 @@
+.container {
+  width: 80%;
+  margin: auto;
+}
+
+.header {
+  background: #f4f4f4;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.footer {
+  background: #f4f4f4;
+  padding: 10px 0;
+  text-align: center;
+  position: relative;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #5cb85c;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
