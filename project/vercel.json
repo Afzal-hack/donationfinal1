@@ -1,14 +1,15 @@
 {
   "version": 2,
   "builds": [
-    { "src": "main.py", "use": "@vercel/python" }
+    { "src": "project/main.py", "use": "@vercel/python" }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "main.py" }
+    { "src": "/(.*)", "dest": "project/main.py" }
   ],
   "env": {
     "ADMIN_PASSWORD": "@admin_password",
-    "SECRET_KEY":     "@secret_key",
+    "SECRET_KEY": "@secret_key",
+    "ALLOWED_ORIGINS": "@allowed_origins",
     "AUTO_DELETE_MINS": "10"
   }
 }
